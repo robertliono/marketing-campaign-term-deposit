@@ -170,13 +170,13 @@ lr = LogisticRegression(penalty='l1', C=1)
 lr.fit(X_train_std, y_train)
 y_pred = lr.predict(X_test_std)
 y_pred_prob = lr.predict_proba(X_test_std)[:,1]
-coeff = lr.coef_
+coeff = np.abs(lr.coef_[0])
 names = X_train.columns
-_ = plt.plot(range(len(names)), coeff[0])
-_ = plt.xticks(range(len(names)), names, size=6, rotation=90)
-_ = plt.ylabel('Coefficients', size=8)
-_ = plt.tight_layout()
-plt.show()
+coefficients = pd.Series(coeff, index = names)
+sorted_coefficients = coefficients.sort_values()
+plt.clf()
+plt.tight_layout()
+sorted_coefficients.plot(kind='barh', color='lightgreen'); plt.show()
 
 #Bagging - decision tree
 dt = DecisionTreeClassifier(max_depth=20, min_samples_leaf=0.01, random_state=1)
